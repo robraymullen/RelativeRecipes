@@ -1,0 +1,67 @@
+package com.relativerecipes.RelativeRecipes.recipe.repository;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
+
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@TestPropertySource(
+		  locations = "classpath:application-integration-test.properties")
+class RecipeRepositoryIntegrationTest extends AbstractRepositoryIntegrationTest {
+
+	private RecipeRepository recipeRepo;
+	
+	Recipe recipe;
+	
+	@Autowired
+	public RecipeRepositoryIntegrationTest(TestEntityManager entityManager, RecipeRepository recipeRepo) {
+		super(entityManager);
+		this.recipeRepo = recipeRepo;
+	}
+	
+	@Before
+	public void setUp() throws Exception {
+		recipe = new Recipe();
+		recipe.setTitle("Test title");
+		recipe.setText("Buy some food, cook it");
+		recipe.setPostedDate(new Date());
+	}
+
+	@Rollback
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Transactional
+	@Test
+	void testGetSingleRecipeById() {
+		persist(recipe);
+		List<Recipe> recipes = recipeRepo.findAll();
+		Long id = recipes.get(0).getId();
+		Optional<Recipe> recipeById = recipeRepo.findById(id);
+		assertEquals(id, recipeById.get().getId());
+	}
+
+}

@@ -1,0 +1,30 @@
+package com.relativerecipes.RelativeRecipes.recipe.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.relativerecipes.RelativeRecipes.recipe.repository.RecipeRepository;
+
+@RestController
+public class RecipeController {
+	
+	private RecipeRepository recipeRepo;
+	
+	@Autowired
+	public public RecipeController(RecipeRepository recipeRepo) {
+		this.recipeRepo = recipeRepo;
+	}
+	
+	@Autowired
+	public RecipeController(RecipeRepository recipeRepo) {
+		this.recipeRepo = recipeRepo;
+	}
+	
+	@GetMapping("/recipes/{id}")
+	public Recipe getRecipeById(PathVariable Long id) {
+		
+	}
+
+}

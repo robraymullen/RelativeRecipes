@@ -1,0 +1,24 @@
+package com.relativerecipes.RelativeRecipes.recipe.request;
+
+public class RecipeRequestBody {
+	
+	public RecipeRequestBody() {
+		
+	}
+	
+	public RecipeRequestBody(String podcastUrl) {
+		this.podcastUrl = podcastUrl;
+	}
+	
+	@JsonProperty("podcastUrl")
+	public String getPodcastUrl() {
+		return podcastUrl;
+	}
+	
+	@JsonProperty("podcastUrl")
+	public void setPodcastUrl(String podcastUrl) {
+		this.podcastUrl = podcastUrl;
+	}
+	
+
+}

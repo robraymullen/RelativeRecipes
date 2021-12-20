@@ -1,0 +1,5 @@
+package com.relativerecipes.RelativeRecipes.recipe.model;
+
+public class Recipe {
+
+}

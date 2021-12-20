@@ -1,0 +1,27 @@
+package com.relativerecipes.RelativeRecipes.recipe.controller;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import javax.transaction.Transactional;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestPropertySource(
+		  locations = "classpath:application-integrationtest.properties")
+@Transactional
+public class RecipeControllerTest {
+
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
+
+}

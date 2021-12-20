@@ -1,0 +1,52 @@
+package com.relativerecipes.RelativeRecipes.recipe.repository;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
+
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@TestPropertySource(
+		  locations = "classpath:application-integration-test.properties")
+class RecipeRepositoryIntegrationTest extends AbstractRepositoryIntegrationTest {
+
+	private RecipeRepository recipeRepo;
+	
+	Recipe recipe;
+	
+	@Autowired
+	public RecipeRepositoryIntegrationTest(TestEntityManager entityManager, RecipeRepository recipeRepo) {
+		super(entityManager);
+		this.recipeRepo = recipeRepo;
+	}
+	
+	Before
+	public void setUp() throws Exception {
+		episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
+	}
+
+	@Rollback
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
+
+}

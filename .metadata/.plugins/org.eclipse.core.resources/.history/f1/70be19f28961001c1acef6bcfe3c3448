@@ -1,0 +1,13 @@
+package com.relativerecipes.RelativeRecipes.recipe.model;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Recipe {
+
+	@Id
+	@GeneratedValue(generator = "recipe_generator")
+	@SequenceGenerator(name = "recipe_generator", sequenceName = "recipe_sequence", initialValue = 1)
+	private Long id;
+	
+}
