@@ -1,5 +1,6 @@
 
 import React, {ChangeEvent, FormEvent, useState, useEffect} from "react";
+import ReactMarkdown from 'react-markdown';
 
 interface RecipeProps {
   id: number;
@@ -25,7 +26,7 @@ const Recipe = ({ id, title, text, postedDate }: RecipeProps): JSX.Element => {
       <h1>{title}</h1>
       <aside>{id}</aside>
       <div>
-        <p>{text}</p>
+        <ReactMarkdown>{text}</ReactMarkdown>
         <p>{postedDate}</p>
       </div>
     </div>

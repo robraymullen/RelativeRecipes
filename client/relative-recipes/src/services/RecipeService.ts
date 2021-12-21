@@ -25,7 +25,7 @@ export const addRecipe = (title:string, text: string) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: title, text: text })
     };
-    fetch('https://jsonplaceholder.typicode.com/posts/1', requestOptions)
+    fetch(RECIPE_API.PUT, requestOptions)
         .then(response => response.json())
         .then(data => console.log(data));
 }
