@@ -1,5 +1,0 @@
-package com.relativerecipes.RelativeRecipes.recipe.request;
-
-public class RecipeRequestBody {
-
-}

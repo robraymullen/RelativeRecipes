@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.relativerecipes.RelativeRecipes.recipe.repository.RecipeRepositoryTest
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.284 s - in com.relativerecipes.RelativeRecipes.recipe.repository.RecipeRepositoryTest
