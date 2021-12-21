@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,11 @@ public class RecipeController {
 	public Recipe addRecipe(@Valid @RequestBody Recipe newRecipe) {
 		newRecipe.setPostedDate(new Date());
 		return recipeRepo.save(newRecipe);
+	}
+	
+	@DeleteMapping("/recipes/{id}")
+	public void deleteRecipe(@PathVariable("id") Long id) {
+		recipeRepo.deleteById(id);
 	}
 
 }

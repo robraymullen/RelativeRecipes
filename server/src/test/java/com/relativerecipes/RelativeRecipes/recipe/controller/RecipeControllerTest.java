@@ -1,12 +1,14 @@
 package com.relativerecipes.RelativeRecipes.recipe.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -98,9 +100,6 @@ public class RecipeControllerTest {
 		
 		List<Recipe> recipes = recipeRepo.findAll();
 		Long id = recipes.get(0).getId();
-		System.out.println("=======================================");
-		System.out.println("Recipe ID:"+id);
-		System.out.println("Number of recipes:"+recipes.size());
 		
 		mvc.perform(get("/recipes/"+id)
 			      .accept(MediaType.APPLICATION_JSON))
@@ -112,6 +111,25 @@ public class RecipeControllerTest {
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
 				  .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber());
 		
+	}
+	
+	@Test
+	public void testDeleteRecipeById() throws Exception {
+		mvc.perform(put("/recipes")
+				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
+				.contentType(MediaType.APPLICATION_JSON)
+			    .accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+		
+		List<Recipe> recipes = recipeRepo.findAll();
+		Long id = recipes.get(0).getId();
+		
+		mvc.perform(delete("/recipes/"+id)
+			      .accept(MediaType.APPLICATION_JSON))
+			      .andExpect(status().isOk());
+		
+		Optional<Recipe> recipe = recipeRepo.findById(id);
+		assertFalse(recipe.isPresent());
 	}
 
 }
