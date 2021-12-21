@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Recipe from "./components/recipe/Recipe";
+import { fetchAllRecipes } from './services/RecipeService';
+
+interface RecipeProps {
+  id: number;
+  title: string;
+  text: string;
+  postedDate: string;
+}
 
 function App() {
+
+  const[recipes, setRecipes] = useState<RecipeProps[]>([]);
+
+
+  const setStates = (recipes: RecipeProps[]) => {
+    setRecipes(recipes)
+  }
+
+  useEffect(() => {
+    fetchAllRecipes(setStates, ()=> {console.log("error!!!!!!!!!!!")});
+  }, []);
+  const date = new Date();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+          recipes.map((recipe) =>{
+            return <Recipe id={recipe.id} title={recipe.title} text={recipe.text} postedDate={date.toDateString()}/>
+          })
+        }
     </div>
   );
 }
