@@ -34,6 +34,7 @@ public class Recipe {
 	
 	@NotBlank
 	@Field
+	@Size(max=5000)
 	String text;
 	
 	@CreatedDate

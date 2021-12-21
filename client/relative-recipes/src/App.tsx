@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Recipe from "./components/recipe/Recipe";
 import { fetchAllRecipes } from './services/RecipeService';
+import RecipeForm from './components/recipe/RecipeForm';
 
 interface RecipeProps {
   id: number;
@@ -26,6 +27,7 @@ function App() {
   const date = new Date();
   return (
     <div className="App">
+      <RecipeForm></RecipeForm>
       {
           recipes.map((recipe) =>{
             return <Recipe id={recipe.id} title={recipe.title} text={recipe.text} postedDate={date.toDateString()}/>
