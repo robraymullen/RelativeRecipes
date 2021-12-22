@@ -11,12 +11,13 @@ const RecipeForm = () => {
 
     const [title, setTitle] = useState<string>("");
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+    const [tags, setTags] = useState<string>("");
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
         const markdown = draftToMarkdown(convertToRaw(editorState.getCurrentContent()));
         console.log("submitting form:" + title + " text:" + markdown);
-        addRecipe(title, markdown);
+        addRecipe(title, markdown, tags);
 
     };
 
@@ -38,6 +39,8 @@ const RecipeForm = () => {
                         editorState={editorState}
                         onEditorStateChange={setEditorState} />
                 </div>
+                <label>Tags:</label>
+                <input type="text" value={tags} onChange={e=> setTags(e.target.value)}/>
                 <input type="submit" value="Submit"></input>
             </form>
         </div>

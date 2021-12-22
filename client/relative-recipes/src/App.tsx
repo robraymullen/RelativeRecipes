@@ -9,6 +9,7 @@ interface RecipeProps {
   id: number;
   title: string;
   text: string;
+  tags: string[];
   postedDate: string;
 }
 
@@ -30,7 +31,7 @@ function App() {
       <RecipeForm></RecipeForm>
       {
           recipes.map((recipe) =>{
-            return <Recipe id={recipe.id} title={recipe.title} text={recipe.text} postedDate={date.toDateString()}/>
+            return <Recipe id={recipe.id} title={recipe.title} text={recipe.text} postedDate={date.toDateString()} tags={recipe.tags}/>
           })
         }
     </div>
