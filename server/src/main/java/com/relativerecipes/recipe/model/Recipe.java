@@ -1,4 +1,4 @@
-package com.relativerecipes.RelativeRecipes.recipe.model;
+package com.relativerecipes.recipe.model;
 
 import java.util.Date;
 import java.util.List;

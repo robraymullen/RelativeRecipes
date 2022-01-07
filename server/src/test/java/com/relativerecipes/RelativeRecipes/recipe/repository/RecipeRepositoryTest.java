@@ -19,7 +19,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
+import com.relativerecipes.recipe.model.Recipe;
+import com.relativerecipes.recipe.repository.RecipeRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
