@@ -25,8 +25,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
-import com.relativerecipes.RelativeRecipes.recipe.repository.RecipeRepository;
+import com.relativerecipes.recipe.model.Recipe;
+import com.relativerecipes.recipe.repository.RecipeRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

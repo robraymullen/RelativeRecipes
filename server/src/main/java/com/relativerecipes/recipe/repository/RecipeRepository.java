@@ -1,8 +1,8 @@
-package com.relativerecipes.RelativeRecipes.recipe.repository;
+package com.relativerecipes.recipe.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
+import com.relativerecipes.recipe.model.Recipe;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 

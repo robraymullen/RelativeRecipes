@@ -1,4 +1,4 @@
-package com.relativerecipes.RelativeRecipes.recipe.controller;
+package com.relativerecipes.recipe.controller;
 
 import java.util.Date;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.relativerecipes.RelativeRecipes.recipe.model.Recipe;
-import com.relativerecipes.RelativeRecipes.recipe.repository.RecipeRepository;
+import com.relativerecipes.recipe.model.Recipe;
+import com.relativerecipes.recipe.repository.RecipeRepository;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
