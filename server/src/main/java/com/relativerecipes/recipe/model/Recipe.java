@@ -3,6 +3,7 @@ package com.relativerecipes.recipe.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -22,6 +24,8 @@ import org.hibernate.search.annotations.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.NonNull;
+
+import com.relativerecipes.comment.model.Comment;
 
 @Entity
 public class Recipe {
@@ -49,6 +53,10 @@ public class Recipe {
 	@ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "recipe_tags", joinColumns = @JoinColumn(name = "recipe_id"))
 	private List<String> tags;
+	
+	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+	private List<Comment> comments;
 
 	public Long getId() {
 		return id;
@@ -88,6 +96,14 @@ public class Recipe {
 
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 	
 }
