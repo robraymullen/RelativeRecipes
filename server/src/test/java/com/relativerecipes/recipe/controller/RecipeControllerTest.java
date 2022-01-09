@@ -1,4 +1,4 @@
-package com.relativerecipes.RelativeRecipes.recipe.controller;
+package com.relativerecipes.recipe.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
