@@ -1,4 +1,4 @@
-package com.relativerecipes.RelativeRecipes;
+package com.relativerecipes;
 
 import org.junit.Ignore;
 import org.junit.Test;

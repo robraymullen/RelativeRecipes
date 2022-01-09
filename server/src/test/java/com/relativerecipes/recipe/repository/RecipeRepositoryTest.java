@@ -1,4 +1,4 @@
-package com.relativerecipes.RelativeRecipes.recipe.repository;
+package com.relativerecipes.recipe.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 

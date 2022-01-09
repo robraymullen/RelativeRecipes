@@ -1,5 +1,6 @@
 package com.relativerecipes.recipe.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class Recipe {
     @CollectionTable(name = "recipe_tags", joinColumns = @JoinColumn(name = "recipe_id"))
 	private List<String> tags;
 	
-	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY,
+	@OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
 	private List<Comment> comments;
 
@@ -99,6 +100,9 @@ public class Recipe {
 	}
 
 	public List<Comment> getComments() {
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
 		return comments;
 	}
 
