@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -29,9 +30,10 @@ import com.relativerecipes.recipe.model.Recipe;
 public class Comment {
 
 	@Id
-	@GeneratedValue(generator = "comment_generator")
-	@SequenceGenerator(name = "comment_generator", sequenceName = "comment_sequence", initialValue = 1)
-	private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "comment_id", columnDefinition = "VARCHAR(255)")
+	String id;
 	
 	@NotBlank
 	@Field
@@ -54,11 +56,11 @@ public class Comment {
 	@Column(name = "posted_date")
 	private Date postedDate;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

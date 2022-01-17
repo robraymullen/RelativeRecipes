@@ -34,12 +34,12 @@ public class CommentController {
 	}
 	
 	@GetMapping("/comments/recipe/{id}")
-	public List<Comment> getCommentByRecipeId(@PathVariable("id") Long id) {
+	public List<Comment> getCommentByRecipeId(@PathVariable("id") String id) {
 		return this.commentRepo.findByRecipeId(id);
 	}
 	
 	@PutMapping("/comments/recipe/{id}")
-	public Comment addComment(@PathVariable("id") Long id, @Valid @RequestBody Comment comment) {
+	public Comment addComment(@PathVariable("id") String id, @Valid @RequestBody Comment comment) {
 		Recipe recipe = recipeRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
 		recipe.getComments().add(comment);
 		comment.setRecipe(recipe);

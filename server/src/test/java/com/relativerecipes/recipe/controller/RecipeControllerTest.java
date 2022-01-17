@@ -87,7 +87,7 @@ public class RecipeControllerTest {
 			      .andExpect(MockMvcResultMatchers.jsonPath("$[0].text").exists())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$[0].text").isString())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNotEmpty())
-				  .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber());
+				  .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isString());
 	}
 	
 	@Test
@@ -99,7 +99,7 @@ public class RecipeControllerTest {
 				.andExpect(status().isOk());
 		
 		List<Recipe> recipes = recipeRepo.findAll();
-		Long id = recipes.get(0).getId();
+		String id = recipes.get(0).getId();
 		
 		mvc.perform(get("/recipes/"+id)
 			      .accept(MediaType.APPLICATION_JSON))
@@ -109,7 +109,7 @@ public class RecipeControllerTest {
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.text").exists())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.text").isString())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
-				  .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber());
+				  .andExpect(MockMvcResultMatchers.jsonPath("$.id").isString());
 		
 	}
 	
@@ -122,7 +122,7 @@ public class RecipeControllerTest {
 				.andExpect(status().isOk());
 		
 		List<Recipe> recipes = recipeRepo.findAll();
-		Long id = recipes.get(0).getId();
+		String id = recipes.get(0).getId();
 		
 		mvc.perform(delete("/recipes/"+id)
 			      .accept(MediaType.APPLICATION_JSON))

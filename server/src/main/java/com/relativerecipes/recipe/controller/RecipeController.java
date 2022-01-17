@@ -36,7 +36,7 @@ public class RecipeController {
 	}
 	
 	@GetMapping("/recipes/{id}")
-	public Recipe getRecipeById(@PathVariable("id") Long id) {
+	public Recipe getRecipeById(@PathVariable("id") String id) {
 		return recipeRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
 	}
 	
@@ -47,7 +47,7 @@ public class RecipeController {
 	}
 	
 	@DeleteMapping("/recipes/{id}")
-	public void deleteRecipe(@PathVariable("id") Long id) {
+	public void deleteRecipe(@PathVariable("id") String id) {
 		recipeRepo.deleteById(id);
 	}
 

@@ -54,7 +54,7 @@ public class RecipeRepositoryTest extends AbstractRepositoryIntegrationTest {
 	public void testGetSingleRecipeById() {
 		persist(recipe);
 		List<Recipe> recipes = recipeRepo.findAll();
-		Long id = recipes.get(0).getId();
+		String id = recipes.get(0).getId();
 		Optional<Recipe> recipeById = recipeRepo.findById(id);
 		assertEquals(id, recipeById.get().getId());
 	}

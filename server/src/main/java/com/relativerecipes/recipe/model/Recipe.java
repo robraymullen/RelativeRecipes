@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Field;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,10 @@ import com.relativerecipes.comment.model.Comment;
 public class Recipe {
 
 	@Id
-	@GeneratedValue(generator = "recipe_generator")
-	@SequenceGenerator(name = "recipe_generator", sequenceName = "recipe_sequence", initialValue = 1)
-	private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "recipe_id", columnDefinition = "VARCHAR(255)")
+	String id;
 	
 	@NotBlank
 	@Field
@@ -59,11 +61,11 @@ public class Recipe {
             cascade = CascadeType.ALL)
 	private List<Comment> comments;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
