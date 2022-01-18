@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +39,7 @@ public class RecipeController {
 		return recipeRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
 	}
 	
-	@PutMapping("/recipes")
+	@PostMapping("/recipes")
 	public Recipe addRecipe(@Valid @RequestBody Recipe newRecipe) {
 		newRecipe.setPostedDate(new Date());
 		return recipeRepo.save(newRecipe);
