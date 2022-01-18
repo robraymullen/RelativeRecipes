@@ -10,7 +10,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +38,7 @@ public class CommentController {
 		return this.commentRepo.findByRecipeId(id);
 	}
 	
-	@PutMapping("/comments/recipe/{id}")
+	@PostMapping("/comments/recipe/{id}")
 	public Comment addComment(@PathVariable("id") String id, @Valid @RequestBody Comment comment) {
 		Recipe recipe = recipeRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
 		recipe.getComments().add(comment);

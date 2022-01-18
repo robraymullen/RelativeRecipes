@@ -1,18 +1,13 @@
 package com.relativerecipes.comment.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
@@ -24,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.relativerecipes.comment.model.Comment;
 import com.relativerecipes.comment.repository.CommentRepository;
@@ -76,13 +70,13 @@ public class CommentControllerTest {
 
 	@Test
 	public void testAddComment() throws Exception {
-		mvc.perform(put("/recipes")
+		mvc.perform(post("/recipes")
 				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 		Recipe recipe = recipeRepo.findAll().get(0);
-		mvc.perform(put("/comments/recipe/"+recipe.getId())
+		mvc.perform(post("/comments/recipe/"+recipe.getId())
 				.content("{\"text\":\"A test comment\",\"author\":\"TestUser\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
@@ -93,7 +87,7 @@ public class CommentControllerTest {
 	
 	@Test()
 	public void testAddCommentWithoutRecipeThrowsError() throws Exception {
-		mvc.perform(put("/comments/recipe/0")
+		mvc.perform(post("/comments/recipe/0")
 				.content("{\"text\":\"A test comment\",\"author\":\"TestUser\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))

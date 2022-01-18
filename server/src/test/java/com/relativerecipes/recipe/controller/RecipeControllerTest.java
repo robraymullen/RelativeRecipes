@@ -3,7 +3,7 @@ package com.relativerecipes.recipe.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
@@ -62,7 +62,7 @@ public class RecipeControllerTest {
 
 	@Test
 	public void testAddRecipe() throws Exception {
-		mvc.perform(put("/recipes")
+		mvc.perform(post("/recipes")
 				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
@@ -73,7 +73,7 @@ public class RecipeControllerTest {
 	
 	@Test
 	public void testGetAllRecipes() throws Exception {
-		mvc.perform(put("/recipes")
+		mvc.perform(post("/recipes")
 				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
@@ -92,7 +92,7 @@ public class RecipeControllerTest {
 	
 	@Test
 	public void testGetRecipeById() throws Exception {
-		mvc.perform(put("/recipes")
+		mvc.perform(post("/recipes")
 				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ public class RecipeControllerTest {
 	
 	@Test
 	public void testDeleteRecipeById() throws Exception {
-		mvc.perform(put("/recipes")
+		mvc.perform(post("/recipes")
 				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\"}")
 				.contentType(MediaType.APPLICATION_JSON)
 			    .accept(MediaType.APPLICATION_JSON))
