@@ -21,11 +21,11 @@ export const fetchAllRecipes = (resolve: Function, reject: Function) => {
 
 export const addRecipe = (title:string, text: string, tags: string) => {
     const requestOptions = {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: title, text: text, tags: tags.split(",") })
     };
-    fetch(RECIPE_API.PUT, requestOptions)
+    fetch(RECIPE_API.POST, requestOptions)
         .then(response => response.json())
         .then(data => console.log(data));
 }
