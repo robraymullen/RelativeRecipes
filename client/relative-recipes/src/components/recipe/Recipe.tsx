@@ -3,7 +3,7 @@ import React, {ChangeEvent, FormEvent, useState, useEffect} from "react";
 import ReactMarkdown from 'react-markdown';
 
 interface RecipeProps {
-  id: number;
+  id: string;
   title: string;
   text: string;
   tags: string[];
@@ -12,7 +12,7 @@ interface RecipeProps {
 
 const Recipe = ({ id, title, text, tags, postedDate }: RecipeProps): JSX.Element => {
 
-  const [stateId, setId] = useState<number>(0);
+  const [stateId, setId] = useState<string>(0);
   const [stateTitle, setTitle] = useState<string>('');
   const [stateTags, setTags] = useState<string[]>([]);
   const [stateText, setText] = useState<string>('');
