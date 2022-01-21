@@ -131,5 +131,17 @@ public class RecipeControllerTest {
 		Optional<Recipe> recipe = recipeRepo.findById(id);
 		assertFalse(recipe.isPresent());
 	}
+	
+	@Test
+	public void testRecipeTagsHaveTrimmedWhitespace() throws Exception {
+		mvc.perform(post("/recipes")
+				.content("{\"title\":\"Some new test title\",\"text\":\"some text for a test recipe\",\"tags\":[\"    first   \"]}")
+				.contentType(MediaType.APPLICATION_JSON)
+			    .accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+		Recipe recipe = recipeRepo.findAll().get(0);
+		assertTrue(recipe.getTags().contains("first"));
+		
+	}
 
 }

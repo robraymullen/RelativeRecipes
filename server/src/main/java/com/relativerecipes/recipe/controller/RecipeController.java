@@ -2,6 +2,8 @@ package com.relativerecipes.recipe.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -41,6 +43,11 @@ public class RecipeController {
 	
 	@PostMapping("/recipes")
 	public Recipe addRecipe(@Valid @RequestBody Recipe newRecipe) {
+		Set<String> tags = newRecipe.getTags();
+		if (tags != null) {
+			tags = tags.stream().map(tag -> tag.trim()).collect(Collectors.toSet());
+		}
+		newRecipe.setTags(tags);
 		newRecipe.setPostedDate(new Date());
 		return recipeRepo.save(newRecipe);
 	}
