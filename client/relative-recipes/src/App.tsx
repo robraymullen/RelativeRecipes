@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Recipe from "./components/recipe/Recipe";
 import { fetchAllRecipes } from './services/RecipeService';
 import RecipeForm from './components/recipe/RecipeForm';
 import { RecipeProps } from './Types';
+import Header from './components/header/Header';
 
 function App() {
 
@@ -21,6 +21,7 @@ function App() {
   const date = new Date();
   return (
     <div className="App">
+      <Header></Header>
       <RecipeForm></RecipeForm>
       {
           recipes.map((recipe) =>{
