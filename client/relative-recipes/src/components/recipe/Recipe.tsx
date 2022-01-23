@@ -1,27 +1,23 @@
 
 import React, {ChangeEvent, FormEvent, useState, useEffect} from "react";
 import ReactMarkdown from 'react-markdown';
+import { CommentProps, RecipeProps } from "../../Types";
+import Comment from '../comment/Comment';
 
-interface RecipeProps {
-  id: string;
-  title: string;
-  text: string;
-  tags: string[];
-  postedDate: string;
-}
+const Recipe = ({ id, title, text, tags, postedDate, comments }: RecipeProps): JSX.Element => {
 
-const Recipe = ({ id, title, text, tags, postedDate }: RecipeProps): JSX.Element => {
-
-  const [stateId, setId] = useState<string>(0);
+  const [stateId, setId] = useState<string>('');
   const [stateTitle, setTitle] = useState<string>('');
   const [stateTags, setTags] = useState<string[]>([]);
   const [stateText, setText] = useState<string>('');
+  const [stateComments, setComments] = useState<CommentProps[]>([]);
 
   useEffect(() => {
     setId(id);
     setTitle(title);
     setText(text);
     setTags(tags);
+    setComments(comments);
   }, []);
 
   return (
@@ -37,6 +33,11 @@ const Recipe = ({ id, title, text, tags, postedDate }: RecipeProps): JSX.Element
         tags.join(", ")
       }
       </p>
+      {
+        comments.map((comment) => {
+          return <Comment id={comment.id} text={comment.text} author={comment.author} postedDate={comment.postedDate}></Comment>
+        })
+      }
     </div>
   )
 };
