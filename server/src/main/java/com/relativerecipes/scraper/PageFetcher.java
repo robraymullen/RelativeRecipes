@@ -10,25 +10,30 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class PageFetcher implements HTTPFetcher {
+import com.relativerecipes.parser.RecipeParser;
+
+public class PageFetcher {
 	
-	private final HttpClient client = HttpClient.newBuilder()
+	private final static HttpClient client = HttpClient.newBuilder()
 								  .version(Version.HTTP_1_1)
 								  .followRedirects(Redirect.NORMAL)
 								  .connectTimeout(Duration.ofSeconds(60))
 								  .build();
 	
-	private HttpResponse<String> response;
+	private static HttpResponse<String> response;
 	
-	@Override
-	public HTTPFetcher loadPage(String url) throws IOException, InterruptedException {
+	public static void loadPage(String url) throws IOException, InterruptedException {
 		HttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();
 		response = client.send(request, BodyHandlers.ofString());
-		return this;
 	}
 	
-	@Override
 	public String getContent() {
 		return response.body();
+	}
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+		loadPage("https://www.jamieoliver.com/recipes/potato-recipes/basic-latkes/");
+		RecipeParser parser = new RecipeParser();
+		parser.getRecipeText(response.body());
 	}
 }

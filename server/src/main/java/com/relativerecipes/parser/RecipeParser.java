@@ -1,8 +1,12 @@
 package com.relativerecipes.parser;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 public class RecipeParser {
 	
@@ -25,7 +29,8 @@ public class RecipeParser {
 		String jsonLD  = getJsonLD(head);
 		
 		//Parse twitter metadata in head
-		String twitterMetadata = getTwitterMetadata(head);
+		Metadata meta = getTwitterMetadata(head);
+		System.out.println(meta.name + " \n"+meta.description+" \n"+meta.imageUrl);
 		
 		//Extract ingredients in body
 		String ingredients = getIngredientsFromBody(doc.body());
@@ -45,13 +50,44 @@ public class RecipeParser {
 		return null;
 	}
 
-	private String getTwitterMetadata(Element head) {
-		// TODO Auto-generated method stub
-		return null;
+	private Metadata getTwitterMetadata(Element head) {
+		Metadata meta = new Metadata();
+		head.childNodes().stream().forEach((node) -> {
+			String property = node.attr("property");
+			switch(property) {
+				case "og:description":
+					meta.description = node.attr("content");
+					break;
+				case "og:image":
+					meta.imageUrl = node.attr("content");
+					break;
+				case "og:site_name":
+					meta.name = node.attr("content");
+					break;
+			}
+		});
+		return meta;
+	}
+	
+	private boolean isRecipeMetadata(Node node) {
+		String property = node.attr("property");
+		return property.contains("og:description")
+				|| property.contains("og:image")
+				|| property.contains("og:site_name");
 	}
 
 	private String getJsonLD(Element head) {
 		return null;
+	}
+	
+	private class Metadata {
+		String imageUrl;
+		String description;
+		String name;
+		
+		boolean isComplete() {
+			return imageUrl != null && description != null && name != null;
+		}
 	}
 
 }
