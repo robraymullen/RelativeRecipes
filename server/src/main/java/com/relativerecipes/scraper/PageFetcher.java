@@ -12,6 +12,8 @@ import java.time.Duration;
 
 import com.relativerecipes.parser.RecipeParser;
 
+import net.minidev.json.parser.ParseException;
+
 public class PageFetcher {
 	
 	private final static HttpClient client = HttpClient.newBuilder()
@@ -31,8 +33,9 @@ public class PageFetcher {
 		return response.body();
 	}
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
-		loadPage("https://www.jamieoliver.com/recipes/potato-recipes/basic-latkes/");
+	public static void main(String[] args) throws Exception {
+//		loadPage("https://www.jamieoliver.com/recipes/potato-recipes/basic-latkes/");
+		loadPage("https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/");
 		RecipeParser parser = new RecipeParser();
 		parser.getRecipeText(response.body());
 	}

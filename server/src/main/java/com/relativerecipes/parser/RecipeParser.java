@@ -1,18 +1,26 @@
 package com.relativerecipes.parser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
+
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 
 public class RecipeParser {
 	
 	private Document doc;
 	
-	public String getRecipeText(String content) {
+	public String getRecipeText(String content) throws ParseException {
 		/*
 		 * Ideally the recipe data will just be available in a json-ld within the html head
 		 * However this isn't always the case.
@@ -26,7 +34,8 @@ public class RecipeParser {
 		//Parse JSON-ld data in head
 		doc = Jsoup.parse(content);
 		Element head = doc.head();
-		String jsonLD  = getJsonLD(head);
+		JSONData jsonLD  = getJsonLD(head);
+		System.out.println(jsonLD);
 		
 		//Parse twitter metadata in head
 		Metadata meta = getTwitterMetadata(head);
@@ -68,16 +77,52 @@ public class RecipeParser {
 		});
 		return meta;
 	}
-	
-	private boolean isRecipeMetadata(Node node) {
-		String property = node.attr("property");
-		return property.contains("og:description")
-				|| property.contains("og:image")
-				|| property.contains("og:site_name");
-	}
 
-	private String getJsonLD(Element head) {
+	private JSONData getJsonLD(Element head) throws ParseException {
+		Elements jsonLd = head.getElementsByAttributeValue("type", "application/ld+json");
+		if (jsonLd != null) {
+			String data = jsonLd.get(0).data();
+			JSONObject ld = new JSONObject(data);
+			JSONData json = new JSONData();
+			if (ld.has("@graph")) { //@graph and @context separated
+				Object graph = ld.get("@graph");
+				if (graph instanceof JSONArray) {
+					JSONArray graphArr = (JSONArray) graph;
+					List<JSONObject> recipeData = new ArrayList<>();
+					graphArr.forEach((object) -> {
+						JSONObject obj = (JSONObject) object;
+						if (obj.has("recipeIngredient")) {
+							recipeData.add(obj);
+						}
+					});
+					JSONObject jsonData = recipeData.get(0);
+					json.description = jsonData.getString("description");
+					json.ingredients = (List<String>) jsonData.getJSONArray("recipeIngredient").toList().stream().map((ingredient) -> (String) ingredient).collect(Collectors.toList());
+					json.name = jsonData.getString("name");
+					json.instructions = extractJSONInstructions(jsonData.getJSONArray("recipeInstructions"));
+				} else {
+					
+				}
+			} else {
+				
+			}
+			return json;
+		}
 		return null;
+	}
+	
+	private List<InstructionStep> extractJSONInstructions(JSONArray json) {
+		List<InstructionStep> instructions = new ArrayList<>();
+		json.forEach((instruction) -> {
+			JSONObject jsonInstruction = (JSONObject) instruction;
+			InstructionStep step = new InstructionStep();
+			step.name = jsonInstruction.has("name") ? jsonInstruction.getString("name") : "";
+			step.image = jsonInstruction.has("image") ? jsonInstruction.getString("image") : "";
+			step.text = jsonInstruction.has("text") ? jsonInstruction.getString("text") : "";
+			step.url = jsonInstruction.has("url") ? jsonInstruction.getString("url") : "";
+			instructions.add(step);
+		});
+		return instructions;
 	}
 	
 	private class Metadata {
@@ -87,6 +132,39 @@ public class RecipeParser {
 		
 		boolean isComplete() {
 			return imageUrl != null && description != null && name != null;
+		}
+	}
+	
+	private class JSONData {
+		String name;
+		String description;
+		List<InstructionStep> instructions;
+		List<String> ingredients;
+		@Override
+		public String toString() {
+			return "JSONData [name=" + name + ", description=" + description + ", instructions=" + instructions
+					+ ", ingredients=" + ingredients + "]";
+		}
+
+	}
+	
+	private class InstructionStep {
+		/*
+		 * "@type": "HowToStep",
+          "name": "Preheat",
+          "text": "Preheat the oven to 350 degrees F. Grease and flour a 9x9 inch pan.",
+          "url": "https://example.com/party-coffee-cake#step1",
+          "image": "https://example.com/photos/party-coffee-cake/step1.jpg"
+
+		 */
+		String name;
+		String text;
+		String url;
+		String image;
+		
+		@Override
+		public String toString() {
+			return "InstructionStep [name=" + name + ", text=" + text + ", url=" + url + ", image=" + image + "]";
 		}
 	}
 
