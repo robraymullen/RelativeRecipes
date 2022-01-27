@@ -34,8 +34,9 @@ public class PageFetcher {
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		loadPage("https://www.jamieoliver.com/recipes/potato-recipes/basic-latkes/");
-		loadPage("https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/");
+		loadPage("https://www.jamieoliver.com/recipes/potato-recipes/basic-latkes/");
+//		loadPage("https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/");
+//		loadPage("https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies/");
 		RecipeParser parser = new RecipeParser();
 		parser.getRecipeText(response.body());
 	}
