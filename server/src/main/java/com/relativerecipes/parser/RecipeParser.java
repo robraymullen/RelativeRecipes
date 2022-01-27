@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,19 +35,23 @@ public class RecipeParser {
 		//Parse JSON-ld data in head
 		doc = Jsoup.parse(content);
 		Element head = doc.head();
-		JSONData jsonLD  = getJsonLD(head);
-		System.out.println(jsonLD);
+		RecipeData recipeData = new RecipeData();
+		recipeData  = getJsonLD(head, recipeData);
+		System.out.println(recipeData);
 		
-		//Parse twitter metadata in head
-		Metadata meta = getTwitterMetadata(head);
-		System.out.println(meta.name + " \n"+meta.description+" \n"+meta.imageUrl);
-		
-		//Extract ingredients in body
-		String ingredients = getIngredientsFromBody(doc.body());
-		
-		//Extract method in body
-		String method = getMethodFromBody(doc.body());
+		if (!recipeData.isComplete()) {
+			//Parse twitter metadata in head
+			recipeData = getTwitterMetadata(head, recipeData);
+			System.out.println(recipeData.name + " \n"+recipeData.description+" \n"+recipeData.imageUrl);
+			
+			//Extract ingredients in body
+			String ingredients = getIngredientsFromBody(doc.body());
+			
+			//Extract method in body
+			String method = getMethodFromBody(doc.body());
+		}
 		return null;
+		
 	}
 	
 	private String getMethodFromBody(Element body) {
@@ -59,56 +64,73 @@ public class RecipeParser {
 		return null;
 	}
 
-	private Metadata getTwitterMetadata(Element head) {
-		Metadata meta = new Metadata();
+	private RecipeData getTwitterMetadata(Element head, RecipeData recipeData) {
 		head.childNodes().stream().forEach((node) -> {
 			String property = node.attr("property");
 			switch(property) {
 				case "og:description":
-					meta.description = node.attr("content");
+					recipeData.description = node.attr("content");
 					break;
 				case "og:image":
-					meta.imageUrl = node.attr("content");
+					recipeData.imageUrl = node.attr("content");
 					break;
 				case "og:site_name":
-					meta.name = node.attr("content");
+					recipeData.name = node.attr("content");
 					break;
 			}
 		});
-		return meta;
+		return recipeData;
 	}
 
-	private JSONData getJsonLD(Element head) throws ParseException {
+	private RecipeData getJsonLD(Element head, RecipeData recipeData) throws ParseException {
 		Elements jsonLd = head.getElementsByAttributeValue("type", "application/ld+json");
-		if (jsonLd != null) {
+		if (jsonLd != null && !jsonLd.isEmpty()) {
 			String data = jsonLd.get(0).data();
-			JSONObject ld = new JSONObject(data);
-			JSONData json = new JSONData();
+			JSONObject ld = null;
+			try {
+				ld = new JSONObject(data);
+			} catch (JSONException e) {
+				try {
+					JSONArray ldArr = new JSONArray(data);
+					for (Object obj : ldArr) {
+						JSONObject mappedObject = (JSONObject) obj;
+						if (mappedObject.has("recipeIngredient")) {
+							ld = mappedObject;
+						}
+					}
+				} catch (JSONException error) {
+					return recipeData;
+				}
+			}
+			
 			if (ld.has("@graph")) { //@graph and @context separated
 				Object graph = ld.get("@graph");
 				if (graph instanceof JSONArray) {
 					JSONArray graphArr = (JSONArray) graph;
-					List<JSONObject> recipeData = new ArrayList<>();
+					List<JSONObject> extractedJsonData = new ArrayList<>();
 					graphArr.forEach((object) -> {
 						JSONObject obj = (JSONObject) object;
 						if (obj.has("recipeIngredient")) {
-							recipeData.add(obj);
+							extractedJsonData.add(obj);
 						}
 					});
-					JSONObject jsonData = recipeData.get(0);
-					json.description = jsonData.getString("description");
-					json.ingredients = (List<String>) jsonData.getJSONArray("recipeIngredient").toList().stream().map((ingredient) -> (String) ingredient).collect(Collectors.toList());
-					json.name = jsonData.getString("name");
-					json.instructions = extractJSONInstructions(jsonData.getJSONArray("recipeInstructions"));
+					JSONObject jsonData = extractedJsonData.get(0);
+					extractAllJSONld(jsonData, recipeData);
 				} else {
 					
 				}
 			} else {
-				
+				extractAllJSONld(ld, recipeData);
 			}
-			return json;
 		}
-		return null;
+		return recipeData;
+	}
+	
+	private void extractAllJSONld(JSONObject ld, RecipeData data) {
+		data.description = ld.getString("description");
+		data.ingredients = (List<String>) ld.getJSONArray("recipeIngredient").toList().stream().map((ingredient) -> (String) ingredient).collect(Collectors.toList());
+		data.name = ld.getString("name");
+		data.instructions = extractJSONInstructions(ld.getJSONArray("recipeInstructions"));
 	}
 	
 	private List<InstructionStep> extractJSONInstructions(JSONArray json) {
@@ -135,15 +157,21 @@ public class RecipeParser {
 		}
 	}
 	
-	private class JSONData {
+	private class RecipeData {
 		String name;
 		String description;
 		List<InstructionStep> instructions;
 		List<String> ingredients;
+		String imageUrl;
 		@Override
 		public String toString() {
-			return "JSONData [name=" + name + ", description=" + description + ", instructions=" + instructions
-					+ ", ingredients=" + ingredients + "]";
+			return "JSONData [name=" + name + ",\n description=" + description + ",\n instructions=" + instructions
+					+ ",\n ingredients=" + ingredients + "]";
+		}
+		
+		boolean isComplete() {
+			return name != null && description != null && instructions != null && ingredients != null 
+					&& imageUrl != null;
 		}
 
 	}
