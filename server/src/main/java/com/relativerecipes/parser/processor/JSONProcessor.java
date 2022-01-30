@@ -25,7 +25,7 @@ public class JSONProcessor implements IDocumentProcessor {
 			extractAllJSONld(getJSONRecipeData(data), recipeData);
 		}
 		
-		return null;
+		return recipeData;
 	}
 	
 	private void extractAllJSONld(JSONObject ld, RecipeData data) {
@@ -43,7 +43,7 @@ public class JSONProcessor implements IDocumentProcessor {
 			InstructionStep step = new InstructionStep();
 			step.name = jsonInstruction.has("name") ? jsonInstruction.getString("name") : "";
 			step.image = jsonInstruction.has("image") ? jsonInstruction.getString("image") : "";
-			step.text = jsonInstruction.has("text") ? jsonInstruction.getString("text") : "";
+			step.text = jsonInstruction.has("text") ? jsonInstruction.getString("text").replace("\n", "").replace("\r", "") : "";
 			step.url = jsonInstruction.has("url") ? jsonInstruction.getString("url") : "";
 			instructions.add(step);
 		});
