@@ -1,5 +1,7 @@
 package com.relativerecipes.parser.processor;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
 import org.jsoup.nodes.Document;
@@ -8,7 +10,7 @@ import com.relativerecipes.parser.model.RecipeData;
 
 public class ProcessorPipeline {
 	
-	private Stack<IDocumentProcessor> processors = new Stack<>();
+	private Queue<IDocumentProcessor> processors = new ArrayDeque<>();
 	
 	
 	public ProcessorPipeline() {
@@ -20,7 +22,8 @@ public class ProcessorPipeline {
 	
 	public RecipeData run(Document document, RecipeData recipeData) {
 		while (!processors.isEmpty()) {
-			processors.pop().processPage(document, recipeData);
+			IDocumentProcessor processor = processors.remove();
+			processor.processPage(document, recipeData);
 		}
 		return recipeData;
 	}
