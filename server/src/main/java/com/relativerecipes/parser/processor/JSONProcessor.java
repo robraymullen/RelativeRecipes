@@ -30,23 +30,25 @@ public class JSONProcessor implements IDocumentProcessor {
 	
 	private void extractAllJSONld(JSONObject ld, RecipeData data) {
 		if (ld == null) return;
-		data.setDescription(ld.getString("description"));
-		data.setIngredients((List<String>) ld.getJSONArray("recipeIngredient").toList().stream().map((ingredient) -> (String) ingredient).collect(Collectors.toList()));
-		data.setName(ld.getString("name"));
-		data.setInstructions(extractJSONInstructions(ld.getJSONArray("recipeInstructions")));
+		data.setDescription(ld.optString("description"));
+		data.setIngredients((List<String>) ld.optJSONArray("recipeIngredient").toList().stream().map((ingredient) -> (String) ingredient).collect(Collectors.toList()));
+		data.setName(ld.optString("name"));
+		data.setInstructions(extractJSONInstructions(ld.optJSONArray("recipeInstructions")));
 	}
 	
 	private List<InstructionStep> extractJSONInstructions(JSONArray json) {
 		List<InstructionStep> instructions = new ArrayList<>();
-		json.forEach((instruction) -> {
-			JSONObject jsonInstruction = (JSONObject) instruction;
-			InstructionStep step = new InstructionStep();
-			step.name = jsonInstruction.has("name") ? jsonInstruction.getString("name") : "";
-			step.image = jsonInstruction.has("image") ? jsonInstruction.getString("image") : "";
-			step.text = jsonInstruction.has("text") ? jsonInstruction.getString("text").replace("\n", "").replace("\r", "") : "";
-			step.url = jsonInstruction.has("url") ? jsonInstruction.getString("url") : "";
-			instructions.add(step);
-		});
+		if (json != null) {
+			json.forEach((instruction) -> {
+				JSONObject jsonInstruction = (JSONObject) instruction;
+				InstructionStep step = new InstructionStep();
+				step.name = jsonInstruction.has("name") ? jsonInstruction.optString("name") : "";
+				step.image = jsonInstruction.has("image") ? jsonInstruction.optString("image") : "";
+				step.text = jsonInstruction.has("text") ? jsonInstruction.optString("text").replace("\n", "").replace("\r", "") : "";
+				step.url = jsonInstruction.has("url") ? jsonInstruction.optString("url") : "";
+				instructions.add(step);
+			});
+		}
 		return instructions;
 	}
 	

@@ -12,6 +12,8 @@ import java.util.List;
 import com.relativerecipes.parser.model.InstructionStep;
 import com.relativerecipes.parser.model.RecipeData;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.AfterEach;
@@ -43,10 +45,37 @@ class JSONProcessorTest {
 	
 	@Test
 	void testProcessorWithEmptyJSONld() {
-		document = new Document("<html><head><script type='application/ld+json'</head></html>");
+		document = new Document("<html><head><script type='application/ld+json />'</head></html>");
 		recipe = new RecipeData();
 		recipe = processor.processPage(document, recipe);
 		assertEquals(new RecipeData(), recipe);
+	}
+	
+	@Test
+	void testNestedArrays() {
+		JSONObject json = new JSONObject();
+		JSONArray array1 = new JSONArray();
+		JSONObject innerElem1 = new JSONObject();
+		JSONArray innerArray1 = new JSONArray();
+		JSONObject innerObject = new JSONObject();
+		JSONArray recipeArray = new JSONArray();
+		recipeArray.put("Ingredient text");
+		innerObject.put("recipeIngredient", recipeArray);
+		innerElem1.put("innerElem1", innerObject);
+		array1.put(innerElem1);
+		json.put("nestedArray", array1);
+		
+		document = Jsoup.parse("<html><head><script type='application/ld+json'>"+json.toString()+"</script></head></html>");
+		RecipeData expectedRecipe = new RecipeData();
+		List<String> ingredients = new ArrayList<>();
+		ingredients.add("Ingredient text");
+		expectedRecipe.setIngredients(ingredients);
+		expectedRecipe.setName("");
+		expectedRecipe.setDescription("");
+		expectedRecipe.setInstructions(new ArrayList<>());
+		recipe = new RecipeData();
+		recipe = processor.processPage(document, recipe);
+		assertEquals(expectedRecipe, recipe);
 	}
 	
 	/**
