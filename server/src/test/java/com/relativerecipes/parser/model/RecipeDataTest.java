@@ -36,6 +36,16 @@ class RecipeDataTest {
 	}
 	
 	@Test
+	void testIsCompleteWithEmptyData() {
+		recipe.setName("", true);
+		recipe.setDescription("", true);
+		recipe.setImageUrl("", true);
+		recipe.setIngredients(new ArrayList<String>());
+		recipe.setInstructions(new ArrayList<InstructionStep>());
+		assertFalse(recipe.isComplete());
+	}
+	
+	@Test
 	void testIsCompleteWithAllDataSet() {
 		List<String> ingredients = new ArrayList<>();
 		ingredients.add("ingredient");
