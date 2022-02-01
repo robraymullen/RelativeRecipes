@@ -11,7 +11,11 @@ public class RecipeData {
 	private String imageUrl;
 
 	public boolean isComplete() {
-		return name != null && description != null && instructions != null && ingredients != null && imageUrl != null;
+		return this.name != null && !this.name.isEmpty()
+				&& this.description != null && !this.description.isEmpty()
+				&& this.instructions != null && !this.instructions.isEmpty()
+				&& this.ingredients != null && !this.ingredients.isEmpty()
+				&& this.imageUrl != null && !this.imageUrl.isEmpty();
 	}
 
 	/**
