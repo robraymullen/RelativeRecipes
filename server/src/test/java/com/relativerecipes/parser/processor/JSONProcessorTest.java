@@ -36,18 +36,44 @@ class JSONProcessorTest {
 	}
 
 	@Test
-	void testProcessorWithEmptyDocument() {
+	void testEmptyDocument() {
 		document = new Document("");
-		recipe = new RecipeData();
-		recipe = processor.processPage(document, recipe);
+		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
-	void testProcessorWithEmptyJSONld() {
-		document = new Document("<html><head><script type='application/ld+json />'</head></html>");
-		recipe = new RecipeData();
-		recipe = processor.processPage(document, recipe);
+	void testEmptyJSONld() {
+		document = new Document("<html><head><script type='application/ld+json'/></head></html>");
+		recipe = processor.processPage(document, new RecipeData());
+		assertEquals(new RecipeData(), recipe);
+	}
+	
+	@Test
+	void testEmptyJSONObject() {
+		document = new Document("<html><head><script type='application/ld+json'/>{}</head></html>");
+		recipe = processor.processPage(document, new RecipeData());
+		assertEquals(new RecipeData(), recipe);
+	}
+	
+	@Test
+	void testEmptyJSONArray() {
+		document = new Document("<html><head><script type='application/ld+json'/>[]</head></html>");
+		recipe = processor.processPage(document, new RecipeData());
+		assertEquals(new RecipeData(), recipe);
+	}
+	
+	@Test
+	void testInvalidJSONObject() {
+		document = new Document("<html><head><script type='application/ld+json'/>{'recipeIngredient': [ingredient], 'recipeInstructions': {</head></html>");
+		recipe = processor.processPage(document, new RecipeData());
+		assertEquals(new RecipeData(), recipe);
+	}
+	
+	@Test
+	void testInvalidJSONArray() {
+		document = new Document("<html><head><script type='application/ld+json'/>{'recipeIngredient':['ingredient'}</head></html>");
+		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
