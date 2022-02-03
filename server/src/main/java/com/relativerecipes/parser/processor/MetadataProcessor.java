@@ -20,7 +20,7 @@ public class MetadataProcessor implements IDocumentProcessor {
 				case "og:image":
 					recipeData.setImageUrl(content);
 					break;
-				case "og:site_name":
+				case "og:title":
 					recipeData.setName(content);
 					break;
 			}
