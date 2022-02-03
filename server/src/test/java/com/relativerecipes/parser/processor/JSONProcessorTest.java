@@ -37,42 +37,42 @@ class JSONProcessorTest {
 
 	@Test
 	void testEmptyDocument() {
-		document = new Document("");
+		document = Jsoup.parse("");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
 	void testEmptyJSONld() {
-		document = new Document("<html><head><script type='application/ld+json'/></head></html>");
+		document = Jsoup.parse("<html><head><script type='application/ld+json'/></head></html>");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
 	void testEmptyJSONObject() {
-		document = new Document("<html><head><script type='application/ld+json'/>{}</head></html>");
+		document = Jsoup.parse("<html><head><script type='application/ld+json'/>{}</head></html>");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
 	void testEmptyJSONArray() {
-		document = new Document("<html><head><script type='application/ld+json'/>[]</head></html>");
+		document = Jsoup.parse("<html><head><script type='application/ld+json'/>[]</head></html>");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
 	void testInvalidJSONObject() {
-		document = new Document("<html><head><script type='application/ld+json'/>{'recipeIngredient': [ingredient], 'recipeInstructions': {</head></html>");
+		document = Jsoup.parse("<html><head><script type='application/ld+json'/>{'recipeIngredient': [ingredient], 'recipeInstructions': {</head></html>");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
 	
 	@Test
 	void testInvalidJSONArray() {
-		document = new Document("<html><head><script type='application/ld+json'/>{'recipeIngredient':['ingredient'}</head></html>");
+		document = Jsoup.parse("<html><head><script type='application/ld+json'/>{'recipeIngredient':['ingredient'}</head></html>");
 		recipe = processor.processPage(document, new RecipeData());
 		assertEquals(new RecipeData(), recipe);
 	}
