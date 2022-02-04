@@ -20,19 +20,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class JSONProcessorTest {
+class JSONProcessorTest extends AbstractProcessorTest {
 	
-	IDocumentProcessor processor;
-	Document document;
-	RecipeData recipe;
-
 	@BeforeEach
 	void setUp() throws Exception {
 		processor = new JSONProcessor();
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
 	}
 
 	@Test
@@ -161,10 +153,4 @@ class JSONProcessorTest {
 		assertEquals(expectedRecipe, recipe);
 		
 	}
-	
-	private String getFileContents(String fileName) throws IOException {
-		File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
-		return Files.readString(file.toPath());
-	}
-
 }
