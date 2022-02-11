@@ -16,8 +16,10 @@ public class ProcessorPipeline {
 	public ProcessorPipeline() {
 		IDocumentProcessor jsonProcessor = new JSONProcessor();
 		IDocumentProcessor metaProcessor = new MetadataProcessor();
+		IDocumentProcessor htmlProcessor = new HTMLProcessor();
 		processors.add(jsonProcessor);
 		processors.add(metaProcessor);
+		processors.add(htmlProcessor);
 	}
 	
 	public RecipeData run(Document document, RecipeData recipeData) {
