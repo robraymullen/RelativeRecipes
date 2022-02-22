@@ -43,13 +43,18 @@ public class HTMLProcessor implements IDocumentProcessor {
 		    	// Nothing to do
 		    }
 		});
-		InstructionStep step = new InstructionStep();
-		step.text = instructionMatches.toString();
-		step.name = "";
-		step.url = "";
-		recipeData.setName(titleSet.toString());
-		recipeData.setInstructions(List.of(step));
-		recipeData.setIngredients(List.of(ingredientMatches.toString()));
+		
+		if (!titleSet.isEmpty()) {
+			recipeData.setName(titleSet.toString().replace("[", "").replace("]", ""));
+		}
+		if (!instructionMatches.isEmpty()) {
+			InstructionStep step = new InstructionStep();
+			step.text = instructionMatches.toString().replace("[", "").replace("]", "");
+			recipeData.setInstructions(List.of(step));	
+		}
+		if (!ingredientMatches.isEmpty()) {
+			recipeData.setIngredients(List.of(ingredientMatches.toString().replaceAll("\\[", "").replaceAll("]", "")));	
+		}
 		return recipeData;
 	}
 
