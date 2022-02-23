@@ -29,7 +29,7 @@ public class PageFetcher {
 		response = client.send(request, BodyHandlers.ofString());
 	}
 	
-	public String getContent() {
+	public static String getContent() {
 		return response.body();
 	}
 	
