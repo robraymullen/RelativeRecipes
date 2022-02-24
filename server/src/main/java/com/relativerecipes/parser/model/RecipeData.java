@@ -10,6 +10,26 @@ public class RecipeData {
 	private List<String> ingredients;
 	private String imageUrl;
 
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public List<InstructionStep> getInstructions() {
+		return instructions;
+	}
+
+	public List<String> getIngredients() {
+		return ingredients;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
 	public boolean isComplete() {
 		return this.name != null && !this.name.isEmpty()
 				&& this.description != null && !this.description.isEmpty()

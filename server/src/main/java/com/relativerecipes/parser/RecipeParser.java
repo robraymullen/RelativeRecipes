@@ -27,7 +27,7 @@ public class RecipeParser {
 	
 	private Document doc;
 	
-	public String getRecipeText(String content) throws ParseException {
+	public RecipeData getRecipeText(String content) throws ParseException {
 		/*
 		 * Ideally the recipe data will just be available in a json-ld within the html head
 		 * However this isn't always the case.
@@ -43,9 +43,6 @@ public class RecipeParser {
 		RecipeData recipeData = new RecipeData();
 		ProcessorPipeline pipeline = new ProcessorPipeline();
 		pipeline.run(doc, recipeData);
-		
-		System.out.println(recipeData);
-		return null;
-		
+		return recipeData;
 	}
 }
