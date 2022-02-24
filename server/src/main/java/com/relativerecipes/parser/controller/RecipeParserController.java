@@ -24,9 +24,6 @@ public class RecipeParserController {
 	
 	RestTemplate template;
 	
-	@Autowired
-	RecipeRepository repo;
-	
 	public RecipeParserController(RestTemplateBuilder templateBuilder) {
 		this.template = templateBuilder.build();
 	}
